@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmMQInput.msgnode="ComIbmMQInput.msgnode" xmlns:ComIbmMQOutput.msgnode="ComIbmMQOutput.msgnode" xmlns:ComIbmRESTAsyncRequest.msgnode="ComIbmRESTAsyncRequest.msgnode" xmlns:ComIbmRESTAsyncResponse.msgnode="ComIbmRESTAsyncResponse.msgnode" xmlns:ComIbmSOAPRequest.msgnode="ComIbmSOAPRequest.msgnode" xmlns:ComIbmThrow.msgnode="ComIbmThrow.msgnode" xmlns:ComIbmTrace.msgnode="ComIbmTrace.msgnode"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="Main_Msg_Flow.msgflow" nsPrefix="Main_Msg_Flow.msgflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <translation xmi:type="utility:TranslatableString" key="Main_Msg_Flow" bundleName="Main_Msg_Flow" pluginId="SYDIPEL_FINCH_CustomerCreation"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/SYDIPEL_FINCH_CustomerCreation/icons/full/obj16/Main_Msg_Flow.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/SYDIPEL_FINCH_CustomerCreation/icons/full/obj30/Main_Msg_Flow.gif"/>
+    <composition>
+      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="83,318" queueName="COSMOS.ACE.CIF.SYNC" messageDomainProperty="BLOB">
+        <translation xmi:type="utility:ConstantString" string="COSMOS.ACE.CIF.SYNC"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="401,500" queueName="COSMOS.ACE.CIF.SYNC.ERR">
+        <translation xmi:type="utility:ConstantString" string="COSMOS.ACE.CIF.SYNC.ERR"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_8" location="952,479" queueName="COSMOS.ACE.CIF.SYNC.OUT">
+        <translation xmi:type="utility:ConstantString" string="COSMOS.ACE.CIF.SYNC.OUT"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_17" location="340,303" computeExpression="esql://routine/#CICS_Request_Compute.Main">
+        <translation xmi:type="utility:ConstantString" string="Prepare_Req_CICS"/>
+      </nodes>
+      <nodes xmi:type="ComIbmSOAPRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_22" location="554,299" wsdlFileName="cicsCustomerInfoService.wsdl" selectedPortType="CICS_Msg_SetPortType" selectedBinding="CICS_Msg_SetSOAP_HTTP_Binding" selectedOperation="get_customer" selectedPort="CICS_Port" targetNamespace="http://tempuri.org/cicsCustomer" useHTTPTransport="true" webServiceURL="http://localhost:7800/cics_customer_info" sslProtocol="TLS">
+        <translation xmi:type="utility:ConstantString" string="CICS_Request"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_25" location="708,307" computeExpression="esql://routine/#Financle_Req_Compute.Main">
+        <translation xmi:type="utility:ConstantString" string="Prepare_Req_Finacle_CDH"/>
+      </nodes>
+      <nodes xmi:type="ComIbmRESTAsyncRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="995,307" asyncResponseCorrelator="d03c5bef-3019-453a-9488-938a2bacc350" definitionType="swagger_20" definitionFile="Finacle_CDH.json" operationName="postCustomer" acceptCompressedResponses="true">
+        <translation xmi:type="utility:ConstantString" string="postCustomer"/>
+      </nodes>
+      <nodes xmi:type="ComIbmRESTAsyncResponse.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="723,480" asyncRequestCorrelator="d03c5bef-3019-453a-9488-938a2bacc350">
+        <translation xmi:type="utility:ConstantString" string="REST Async Response"/>
+      </nodes>
+      <nodes xmi:type="ComIbmTrace.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_7" location="298,500" destination="file" filePath="C:\Docker_Volumes\Jogstash\Exceptio_logs.log" pattern="Timestamp : ${CURRENT_TIMESTAMP}   &#xD;&#xA;Expection List : ${ExceptionList}">
+        <translation xmi:type="utility:ConstantString" string="Trace"/>
+      </nodes>
+      <nodes xmi:type="ComIbmThrow.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_9" location="1025,176" messageCatalog="Catalog_Customer" messageNumber="404" messageText="Customer Doesn't Exist at CICS">
+        <translation xmi:type="utility:ConstantString" string="Throw"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_13" targetNode="FCMComposite_1_17" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_21" targetNode="FCMComposite_1_22" sourceNode="FCMComposite_1_17" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_23" targetNode="FCMComposite_1_25" sourceNode="FCMComposite_1_22" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_4" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_25" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_5" targetNode="FCMComposite_1_8" sourceNode="FCMComposite_1_3" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_6" targetNode="FCMComposite_1_7" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_7" targetNode="FCMComposite_1_7" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.catch" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_12" targetNode="FCMComposite_1_9" sourceNode="FCMComposite_1_25" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_14" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_7" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer/>
+    <stickyBoard>
+      <stickyNote location="104,52" association="FCMComposite_1_4">
+        <body xmi:type="utility:ConstantString" string="To Do: &#xA;1. Attach Policy for Queue Manager&#xA;2. (Optional) Use a Msg Id&#xA;3.  Use BLOB as Parser&#xA;&#xA;Input Body :cid"/>
+      </stickyNote>
+      <stickyNote location="566,76" association="FCMComposite_1_25">
+        <body xmi:type="utility:ConstantString" string="If the user doesnt exist the information &#xA;about the user will be empty.&#xA;Then throw an error!"/>
+      </stickyNote>
+    </stickyBoard>
+  </eClassifiers>
+</ecore:EPackage>

@@ -1,0 +1,26 @@
+	
+
+CREATE COMPUTE MODULE CICS_Request_Compute
+	DECLARE soapenv NAMESPACE 'http://schemas.xmlsoap.org/soap/envelope/'; 
+	DECLARE mrm NAMESPACE 'http://www.mrmnames.net';
+	
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+	
+		
+		SET Environment.RequestHeader.GlobalUUID   = InputRoot.MQMD.MsgId;
+	    SET OutputLocalEnvironment.Destination.SOAP.Request.Operation = 'get_customer';
+	    
+	    SET OutputRoot.SOAP.Context.Namespace.(SOAP.NamespaceDecl)xmlns:soapenv = soapenv;
+		SET OutputRoot.SOAP.Context.Namespace.(SOAP.NamespaceDecl)xmlns:mrm = mrm;
+	    
+	   	    
+		CREATE FIELD OutputRoot.SOAP.Body.mrm:GetCustomerType;
+		DECLARE outref REFERENCE TO OutputRoot.SOAP.Body.mrm:GetCustomerType;
+		
+		
+		SET outref.mrm:cid  = CAST(InputRoot.BLOB.BLOB AS CHARACTER CCSID InputRoot.Properties.CodedCharSetId);
+		
+		RETURN TRUE;
+	END;
+END MODULE;

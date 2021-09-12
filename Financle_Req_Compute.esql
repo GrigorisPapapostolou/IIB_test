@@ -1,0 +1,26 @@
+
+
+CREATE COMPUTE MODULE Financle_Req_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- SET OutputLocalEnvironment.Destinationa.HTTP.RequestURL = 'localhost:7080/finacle_cdh/customer';
+		
+		DECLARE Custoner_In REFERENCE TO InputRoot.SOAP.Body.*:SetCustomerType;
+		
+		
+		IF Custoner_In.cid IS NULL THEN
+			PROPAGATE TO TERMINAL 'failure'; --  = -1
+		END IF;
+		
+		
+		CREATE FIELD OutputRoot.JSON.Data.Customer;
+		DECLARE Customer_Out REFERENCE TO OutputRoot.JSON.Data.Customer;
+									
+		SET Customer_Out.cid       = Custoner_In.*:cid     ;
+		SET Customer_Out.firstname = Custoner_In.*:frsName ;
+		SET Customer_Out.lastname  = Custoner_In.*:lstName ;
+		
+		RETURN TRUE;
+	END;
+
+END MODULE;
